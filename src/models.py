@@ -12,7 +12,7 @@ class Login(Base):
     __tablename__ = 'login'
     username = Column(String(250), primary_key=True)
     password = Column(String(250), nullable=False)
-    
+
 class Register(Base):
     __tablename__ = 'userRegister'
     userId = Column(Integer, primary_key=True)
@@ -22,23 +22,44 @@ class Register(Base):
     username_User = Column(String(250), ForeignKey('login.username'))
     password_User = Column(String(250), nullable=False)
     login = relationship(Login)
+    
+class Planets(Base):
+    __tablename__ = 'planets'
+    planetId = Column(Integer, primary_key=True)
+    planetName = Column(String(250), nullable=False)
+    planetDescription = Column(String(250), nullable=False)
+    climate = Column(String(250), nullable=False)
+    population = Column(String(250), nullable=False)
+    orbitalPeriod = Column(String(250), nullable=False)
+    rotationPeriod = Column(String(250), nullable=False)
 
-class Post(Base):
-    __tablename__ = 'post'
-    postId = Column(Integer, primary_key=True)
-    postDesc = Column(String(250), nullable=True)
-    likesPost = Column(Integer, nullable=False)
-    userId_User = Column(Integer, ForeignKey('userRegister.userId'))
-    userRegister = relationship(Register)
+class Characters(Base):
+    __tablename__ = 'characters'
+    characterId = Column(Integer, primary_key=True)
+    characterName = Column(String(250), nullable=False)
+    characterDescription = Column(String(250), nullable=False)
+    birthYear = Column(String(250), nullable=False)
+    gender = Column(String(250), nullable=False)
+    height = Column(String(250), nullable=False)
+    skinColor = Column(String(250), nullable=False)
+    eyeColor = Column(String(250), nullable=False)
 
-class Comment(Base):
-    __tablename__ = 'comment'
-    commentId = Column(Integer, primary_key=True)
-    commentDesc = Column(String(250), nullable=True)
-    userId_us = Column(Integer, ForeignKey('userRegister.userId'))
-    postId_post = Column(Integer, ForeignKey('post.postId'))
+class FavoritePlanet(Base):
+    __tablename__ = 'favoritePlanet'
+    favoriteId_Planet = Column(Integer, primary_key=True)
+    planetId_Planet = Column(Integer,  ForeignKey('planets.planetId'))
+    userId_User = Column(Integer,  ForeignKey('userRegister.userId'))
     userRegister = relationship(Register)
-    post = relationship(Post)
+    planets = relationship(Planets)
+
+class FavoriteCharacter(Base):
+    __tablename__ = 'favoriteCharacter'
+    favoriteId_Character = Column(Integer, primary_key=True)
+    characterId_Character = Column(Integer,  ForeignKey('characters.characterId'))
+    IdUser_User = Column(Integer,  ForeignKey('userRegister.userId'))
+    userRegister = relationship(Register)
+    characters = relationship(Characters)
+
 
     def to_dict(self):
         return {}
